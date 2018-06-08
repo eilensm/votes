@@ -5,7 +5,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                withMaven(maven: 'M3') {
+                    sh "mvn clean install"
+                }
             }
+
         }
         stage('Test') {
             steps {
