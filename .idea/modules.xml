@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservices.iml" filepath="$PROJECT_DIR$/microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rating-persistence-mongoadapter/rating-persistence-mongoadapter.iml" filepath="$PROJECT_DIR$/rating-persistence-mongoadapter/rating-persistence-mongoadapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-app/spring-boot-app.iml" filepath="$PROJECT_DIR$/spring-boot-app/spring-boot-app.iml" />
     </modules>
   </component>

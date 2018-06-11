@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
+        <module name="rating-persistence-mongoadapter" />
         <module name="spring-boot-app" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="core" target="1.8" />
       <module name="microservices" target="1.8" />
+      <module name="rating-persistence-mongoadapter" target="1.8" />
       <module name="spring-boot-app" target="1.8" />
     </bytecodeTargetLevel>
   </component>

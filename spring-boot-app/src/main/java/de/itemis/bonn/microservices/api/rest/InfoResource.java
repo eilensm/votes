@@ -7,10 +7,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 @RequestMapping(path = "/info")
-public class InfoController {
+public class InfoResource {
 
-    @RequestMapping(method = GET)
-    public String info() {
-        return "Hello, world";
-    }
+  @RequestMapping(method = GET)
+  public String info() {
+    return "Hello, world";
+  }
 }

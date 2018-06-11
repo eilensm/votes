@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+
+  mongoclient:
+    image: mongoclient/mongoclient:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - mongoclient-data:/data/db
+
+volumes:
+    mongodb-data:
+      driver: local
+    mongoclient-data:
+      driver: local
