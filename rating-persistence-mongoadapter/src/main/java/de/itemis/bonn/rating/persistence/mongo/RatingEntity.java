@@ -3,10 +3,13 @@ package de.itemis.bonn.rating.persistence.mongo;
 import de.itemis.bonn.rating.Rating;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "rating")
 public class RatingEntity {
 
   private String id;
+
   private int value;
 
   public RatingEntity() {

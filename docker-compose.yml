@@ -8,15 +8,15 @@ services:
     volumes:
       - mongodb-data:/data/db
 
-  mongoclient:
-    image: mongoclient/mongoclient:latest
-    ports:
-      - 3000:3000
-    volumes:
-      - mongoclient-data:/data/db
+#  mongoclient:
+#    image: mongoclient/mongoclient:latest
+#    ports:
+#      - 3000:3000
+#    volumes:
+#      - mongoclient-data:/data/db
 
 volumes:
     mongodb-data:
       driver: local
-    mongoclient-data:
-      driver: local
+#    mongoclient-data:
+#      driver: local
