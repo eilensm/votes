@@ -7,14 +7,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
-        <module name="rating-persistence-mongoadapter" />
         <module name="spring-boot-app" />
+        <module name="vote-persistence-mongo-adapter" />
+        <module name="vote-persistence-mongoadapter" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="core" target="1.8" />
-      <module name="rating-persistence-mongoadapter" target="1.8" />
       <module name="spring-boot-app" target="1.8" />
+      <module name="vote-persistence-mongo-adapter" target="1.8" />
+      <module name="vote-persistence-mongoadapter" target="1.8" />
       <module name="votes" target="1.8" />
     </bytecodeTargetLevel>
   </component>

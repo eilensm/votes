@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>de.itemis.bonn</groupId>
-            <artifactId>rating-persistence-mongo-adapter</artifactId>
+            <artifactId>vote-persistence-mongo-adapter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

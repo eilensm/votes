@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rating-persistence-mongo-adapter</artifactId>
+    <artifactId>vote-persistence-mongo-adapter</artifactId>
 
     <dependencies>
         <dependency>
@@ -20,6 +20,11 @@
             <groupId>de.itemis.bonn</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

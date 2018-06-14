@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rating-persistence-mongoadapter/rating-persistence-mongoadapter.iml" filepath="$PROJECT_DIR$/rating-persistence-mongoadapter/rating-persistence-mongoadapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-app/spring-boot-app.iml" filepath="$PROJECT_DIR$/spring-boot-app/spring-boot-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vote-persistence-mongoadapter/vote-persistence-mongo-adapter.iml" filepath="$PROJECT_DIR$/vote-persistence-mongoadapter/vote-persistence-mongo-adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/votes.iml" filepath="$PROJECT_DIR$/votes.iml" />
     </modules>
   </component>

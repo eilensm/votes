@@ -1,9 +1,9 @@
 package de.itemis.bonn.microservices.config;
 
-import de.itemis.bonn.rating.RatingService;
-import de.itemis.bonn.rating.persistence.mongo.MongoRatingPersistenceService;
-import de.itemis.bonn.rating.persistence.mongo.MongoRatingRepository;
-import de.itemis.bonn.rating.spi.RatingPersistenceService;
+import de.itemis.bonn.rating.VotingService;
+import de.itemis.bonn.rating.persistence.mongo.MongoItemRepository;
+import de.itemis.bonn.rating.persistence.mongo.MongoVotingPersistenceService;
+import de.itemis.bonn.rating.spi.VotingPersistenceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -13,12 +13,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class AppConfig {
 
   @Bean
-  public RatingPersistenceService ratingPersistenceService(final MongoRatingRepository ratingRepository) {
-    return new MongoRatingPersistenceService(ratingRepository);
+  public VotingPersistenceService ratingPersistenceService(final MongoItemRepository ratingRepository) {
+    return new MongoVotingPersistenceService(ratingRepository);
   }
 
   @Bean
-  public RatingService ratingService(final RatingPersistenceService ratingPersistenceService) {
-    return new RatingService(ratingPersistenceService);
+  public VotingService ratingService(final VotingPersistenceService votingPersistenceService) {
+    return new VotingService(votingPersistenceService);
   }
 }
