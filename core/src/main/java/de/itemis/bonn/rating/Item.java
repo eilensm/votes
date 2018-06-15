@@ -16,9 +16,11 @@ public class Item {
   private double average;
 
   public void calcAverage() {
-    votes.stream()
-        .mapToDouble(Vote::getVoteCount)
-        .average()
-        .ifPresent(x -> this.average = x);
+    if (votes != null) {
+      votes.stream()
+          .mapToDouble(Vote::getVoteCount)
+          .average()
+          .ifPresent(x -> this.average = x);
+    }
   }
 }

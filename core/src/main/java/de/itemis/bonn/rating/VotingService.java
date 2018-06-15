@@ -22,7 +22,9 @@ public class VotingService {
 
   public Item getItem(final String itemId) {
     final Item item = votingPersistenceService.findItemById(itemId);
-    item.calcAverage();
+    if (item != null) {
+      item.calcAverage();
+    }
     return item;
   }
 
