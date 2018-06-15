@@ -40,7 +40,7 @@ public class VotingService {
       item.getVotes().add(vote);
     } else {
       final Optional<Vote> existingVote = item.getVotes().stream().filter(x -> x.getId().equals(vote.getId())).findFirst();
-      existingVote.ifPresent(x -> x.setVoteCount(x.getVoteCount() + 1));
+      existingVote.ifPresent(x -> x.setVoteCount(x.getVoteCount() + vote.getVoteCount()));
     }
     final Item storedItem = votingPersistenceService.storeItem(item);
     storedItem.calcAverage();

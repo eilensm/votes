@@ -4,11 +4,14 @@ import de.itemis.bonn.rating.spi.VotingPersistenceService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,10 +98,60 @@ public class VoteServiceTest {
             tuple(ITEM2_ID, DESCRIPTION2));
   }
 
+  @Test
+  public void voteShouldAddNewVote() {
+    final int voteCount = 5;
+    final Vote vote = Vote.builder().voteCount(voteCount).build();
+    final Item item = votingService.vote(ITEM_ID, vote);
+    assertThat(item.getVotes()).containsExactly(vote);
+  }
+
+  @Test
+  public void voteShouldUpdateExistingVote() {
+    final int voteCount = 5;
+    final String voteId = UUID.randomUUID().toString();
+    final Vote vote = Vote.builder()
+        .id(voteId)
+        .voteCount(voteCount)
+        .build();
+    final Vote persistedVote = Vote.builder()
+        .id(voteId)
+        .voteCount(voteCount)
+        .build();
+    final Item persistedItem = buildItem(ITEM_ID, DESCRIPTION);
+    persistedItem.getVotes().add(persistedVote);
+    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(persistedItem);
+    final Item item = votingService.vote(ITEM_ID, vote);
+    assertThat(item.getVotes())
+        .extracting(Vote::getId, Vote::getVoteCount)
+        .containsExactly(tuple(voteId, voteCount * 2));
+  }
+
+  @Test
+  public void voteShouldUpdateItemWithVote() {
+    final int voteCount = 5;
+    final Vote vote = Vote.builder().voteCount(voteCount).build();
+    votingService.vote(ITEM_ID, vote);
+    final ArgumentCaptor<Item> captor = ArgumentCaptor.forClass(Item.class);
+    verify(votingPersistenceService).storeItem(captor.capture());
+    assertThat(captor.getValue().getVotes())
+        .extracting(Vote::getVoteCount)
+        .containsExactly(voteCount);
+  }
+
+  @Test
+  public void voteShouldCalcNewAverage() {
+    final int voteCount = 5;
+    final Vote vote = Vote.builder().voteCount(voteCount).build();
+    final Item item = votingService.vote(ITEM_ID, vote);
+    assertThat(item.getAverage()).isEqualTo(5);
+  }
+
   private static Item buildItem(final String id, final String description) {
     final Item item = new Item();
     item.setDescription(description);
     item.setId(id);
+    item.setVotes(new ArrayList<>());
     return item;
   }
 }
