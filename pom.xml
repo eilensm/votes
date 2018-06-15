@@ -9,7 +9,7 @@
     <modules>
         <module>core</module>
         <module>spring-boot-app</module>
-        <module>vote-persistence-mongoadapter</module>
+        <module>vote-persistence-mongo-adapter</module>
     </modules>
     <packaging>pom</packaging>
 
