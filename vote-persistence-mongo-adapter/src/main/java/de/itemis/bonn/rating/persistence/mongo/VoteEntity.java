@@ -8,6 +8,6 @@ import org.springframework.data.annotation.Id;
 @Builder(toBuilder = true)
 public class VoteEntity {
   @Id
-  private String id;
+  private int rating;
   private int voteCount;
 }

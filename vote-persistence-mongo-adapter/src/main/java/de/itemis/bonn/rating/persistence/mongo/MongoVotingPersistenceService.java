@@ -3,7 +3,6 @@ package de.itemis.bonn.rating.persistence.mongo;
 import de.itemis.bonn.rating.Item;
 import de.itemis.bonn.rating.Vote;
 import de.itemis.bonn.rating.spi.VotingPersistenceService;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +19,8 @@ public class MongoVotingPersistenceService implements VotingPersistenceService {
   }
 
   @Override
-  public Item findItemById(final String itemId) {
-    final Optional<ItemEntity> entity = mongoItemRepository.findById(itemId);
-    return entity.map(MongoVotingPersistenceService::mapEntityToModel).orElse(null);
+  public Optional<Item> findItemById(final String itemId) {
+    return mongoItemRepository.findById(itemId).map(MongoVotingPersistenceService::mapEntityToModel);
   }
 
   @Override
@@ -45,7 +43,7 @@ public class MongoVotingPersistenceService implements VotingPersistenceService {
         .description(item.getDescription())
         .votes(item.getVotes() == null ? null :
             item.getVotes().stream().map(x -> VoteEntity.builder()
-                .id(x.getId())
+                .rating(x.getRating())
                 .voteCount(x.getVoteCount())
                 .build())
                 .collect(toList()))
@@ -62,7 +60,7 @@ public class MongoVotingPersistenceService implements VotingPersistenceService {
     if (entity.getVotes() != null && !entity.getVotes().isEmpty()) {
       item.setVotes(entity.getVotes()
           .stream()
-          .map(x -> Vote.builder().id(x.getId() == null ? new ObjectId().toString() : x.getId()).voteCount(x.getVoteCount()).build())
+          .map(x -> Vote.builder().rating(x.getRating()).voteCount(x.getVoteCount()).build())
           .collect(toList()));
     }
     return item;

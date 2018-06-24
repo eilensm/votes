@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vote {
-  private String id;
+  private int rating;
   private int voteCount;
 }

@@ -15,12 +15,13 @@ public class Item {
   private List<Vote> votes;
   private double average;
 
-  public void calcAverage() {
+  void calcAverage() {
     if (votes != null) {
-      votes.stream()
-          .mapToDouble(Vote::getVoteCount)
-          .average()
-          .ifPresent(x -> this.average = x);
+      final int totalVotesCount = votes.stream().mapToInt(Vote::getVoteCount).sum();
+      final double ratings = votes.stream()
+          .mapToDouble(x -> x.getRating() * x.getVoteCount())
+          .sum();
+      average = ratings / totalVotesCount;
     }
   }
 }

@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   mongodb:
@@ -12,8 +12,8 @@ services:
     image: voting:latest
     ports:
       - 8080:8080
-    links:
-      - mongodb
+#    links:
+#      - mongodb
 
 #  mongoclient:
 #    image: mongoclient/mongoclient:latest

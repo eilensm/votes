@@ -11,11 +11,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,7 +43,7 @@ public class VoteServiceTest {
       answer.setVotes(input.getVotes());
       return answer;
     });
-    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(buildItem(ITEM_ID, DESCRIPTION));
+    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(Optional.of(buildItem(ITEM_ID, DESCRIPTION)));
     when(votingPersistenceService.findAllItems()).thenReturn(
         asList(buildItem(ITEM_ID, DESCRIPTION), buildItem(ITEM2_ID, DESCRIPTION2)));
   }
@@ -77,9 +76,11 @@ public class VoteServiceTest {
   }
 
   @Test
-  public void getRatingShouldReturnNullIfNotFound() {
-    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(null);
-    assertThat(votingService.getItem(ITEM_ID)).isNull();
+  public void getItemShouldThrowIfNotFound() {
+    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> votingService.getItem(ITEM_ID))
+        .isInstanceOf(VotingException.class)
+        .hasMessage("item not found");
   }
 
   @Test
@@ -109,42 +110,37 @@ public class VoteServiceTest {
   @Test
   public void voteShouldUpdateExistingVote() {
     final int voteCount = 5;
-    final String voteId = UUID.randomUUID().toString();
     final Vote vote = Vote.builder()
-        .id(voteId)
         .voteCount(voteCount)
         .build();
     final Vote persistedVote = Vote.builder()
-        .id(voteId)
         .voteCount(voteCount)
         .build();
     final Item persistedItem = buildItem(ITEM_ID, DESCRIPTION);
     persistedItem.getVotes().add(persistedVote);
-    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(persistedItem);
+    when(votingPersistenceService.findItemById(ITEM_ID)).thenReturn(Optional.of(persistedItem));
     final Item item = votingService.vote(ITEM_ID, vote);
     assertThat(item.getVotes())
-        .extracting(Vote::getId, Vote::getVoteCount)
-        .containsExactly(tuple(voteId, voteCount * 2));
+        .extracting(Vote::getVoteCount)
+        .containsExactly(voteCount + 1);
   }
 
   @Test
   public void voteShouldUpdateItemWithVote() {
-    final int voteCount = 5;
-    final Vote vote = Vote.builder().voteCount(voteCount).build();
+    final Vote vote = Vote.builder().rating(1).build();
     votingService.vote(ITEM_ID, vote);
     final ArgumentCaptor<Item> captor = ArgumentCaptor.forClass(Item.class);
     verify(votingPersistenceService).storeItem(captor.capture());
     assertThat(captor.getValue().getVotes())
         .extracting(Vote::getVoteCount)
-        .containsExactly(voteCount);
+        .containsExactly(1);
   }
 
   @Test
   public void voteShouldCalcNewAverage() {
-    final int voteCount = 5;
-    final Vote vote = Vote.builder().voteCount(voteCount).build();
+    final Vote vote = Vote.builder().rating(5).build();
     final Item item = votingService.vote(ITEM_ID, vote);
-    assertThat(item.getAverage()).isEqualTo(5);
+    assertThat(item.getAverage()).isEqualTo(5d);
   }
 
   private static Item buildItem(final String id, final String description) {

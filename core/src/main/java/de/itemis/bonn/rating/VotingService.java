@@ -21,10 +21,9 @@ public class VotingService {
   }
 
   public Item getItem(final String itemId) {
-    final Item item = votingPersistenceService.findItemById(itemId);
-    if (item != null) {
-      item.calcAverage();
-    }
+    final Item item = votingPersistenceService.findItemById(itemId)
+        .orElseThrow(() -> new VotingException("item not found"));
+    item.calcAverage();
     return item;
   }
 
@@ -35,12 +34,17 @@ public class VotingService {
   }
 
   public Item vote(final String itemId, final Vote vote) {
-    final Item item = votingPersistenceService.findItemById(itemId);
-    if (vote.getId() == null) {
-      item.getVotes().add(vote);
+    final Item item = votingPersistenceService.findItemById(itemId)
+        .orElseThrow(() -> new VotingException("item not " + "found"));
+    final Optional<Vote> existingVote = item.getVotes()
+        .stream()
+        .filter(x -> x.getRating() == vote.getRating())
+        .findFirst();
+    if (existingVote.isPresent()) {
+      existingVote.get().setVoteCount(existingVote.get().getVoteCount() + 1);
     } else {
-      final Optional<Vote> existingVote = item.getVotes().stream().filter(x -> x.getId().equals(vote.getId())).findFirst();
-      existingVote.ifPresent(x -> x.setVoteCount(x.getVoteCount() + vote.getVoteCount()));
+      vote.setVoteCount(1);
+      item.getVotes().add(vote);
     }
     final Item storedItem = votingPersistenceService.storeItem(item);
     storedItem.calcAverage();
